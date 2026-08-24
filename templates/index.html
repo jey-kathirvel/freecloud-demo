@@ -60,49 +60,12 @@
         </div>
     </section>
 
-    <section class="panel">
-        <div class="panel-header">
-            <div>
-                <h2>Server Information</h2>
-                <p>Read information directly from the running cloud server.</p>
-            </div>
-            <button onclick="loadServerInfo()">Load Server Info</button>
-        </div>
-        <pre id="serverInfo">Click "Load Server Info"</pre>
-    </section>
-
-    <section class="lab-grid">
-        <article class="panel">
-            <h2>GET API Demo</h2>
-            <p>Send a name using an HTTP GET request.</p>
-            <input id="getName" type="text" placeholder="Enter your name" value="Jey">
-            <button onclick="testGet()">Test GET</button>
-            <pre id="getResult">Waiting...</pre>
-        </article>
-
-        <article class="panel">
-            <h2>POST API Demo</h2>
-            <p>Send JSON data to the FastAPI server.</p>
-            <input id="postName" type="text" placeholder="Name" value="Jey">
-            <textarea id="postMessage" placeholder="Enter message">Hello from the browser!</textarea>
-            <button onclick="testPost()">Test POST</button>
-            <pre id="postResult">Waiting...</pre>
-        </article>
-    </section>
-
     <section class="lab-grid">
         <article class="panel">
             <h2>Environment Variables</h2>
             <p>Read safe configuration values supplied by the cloud environment.</p>
             <button onclick="testEnvironment()">Read Environment</button>
             <pre id="envResult">Waiting...</pre>
-        </article>
-
-        <article class="panel">
-            <h2>External API</h2>
-            <p>The Render server calls the GitHub public API from the cloud.</p>
-            <button onclick="testExternal()">Call External API</button>
-            <pre id="externalResult">Waiting...</pre>
         </article>
     </section>
 
