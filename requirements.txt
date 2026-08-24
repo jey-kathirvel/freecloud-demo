@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 jinja2
 httpx
+PyYAML
+qrcode[pil]
