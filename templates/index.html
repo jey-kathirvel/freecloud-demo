@@ -8,7 +8,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>FreeCloud Demo</title>
+    <title>Free Cloud Lab</title>
 
     <link
         rel="stylesheet"
@@ -18,111 +18,383 @@
 
 <body>
 
-    <main class="container">
+<div class="page-shell">
+
+    <header class="hero">
 
         <div class="badge">
-            ₹0 CLOUD PROJECT
+            FREE CLOUD LAB v{{ version }}
         </div>
 
         <h1>{{ app_name }}</h1>
 
-        <p class="subtitle">
-            This application was developed and deployed
-            completely from the browser.
+        <p>
+            A real Python/FastAPI application developed,
+            deployed and operated entirely from the browser.
         </p>
 
-        <div class="status">
-            <span></span>
-            Application Running
+        <div class="hero-status">
+
+            <span class="status-dot"></span>
+
+            Running on Render Free Cloud
+
         </div>
 
+    </header>
 
-        <section class="cards">
 
-            <article>
-                <h2>☁️ Free Cloud</h2>
+    <section class="summary-grid">
+
+        <article class="summary-card">
+            <span>Cloud</span>
+            <strong>Render</strong>
+        </article>
+
+        <article class="summary-card">
+            <span>Backend</span>
+            <strong>FastAPI</strong>
+        </article>
+
+        <article class="summary-card">
+            <span>Source</span>
+            <strong>GitHub</strong>
+        </article>
+
+        <article class="summary-card">
+            <span>Cost</span>
+            <strong>₹0</strong>
+        </article>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h2>Server Information</h2>
+
                 <p>
-                    Application running using
-                    free cloud infrastructure.
+                    Read information directly from the
+                    running cloud server.
                 </p>
-            </article>
+            </div>
 
-            <article>
-                <h2>🌐 Free URL</h2>
-                <p>
-                    Public HTTPS URL without
-                    purchasing a domain.
-                </p>
-            </article>
+            <button onclick="loadServerInfo()">
+                Load Server Info
+            </button>
+        </div>
 
-            <article>
-                <h2>⚡ FastAPI</h2>
-                <p>
-                    Python REST API running
-                    on the cloud server.
-                </p>
-            </article>
+        <pre id="serverInfo">Click "Load Server Info"</pre>
 
-            <article>
-                <h2>🔐 HTTPS</h2>
-                <p>
-                    Secure HTTPS connection
-                    included automatically.
-                </p>
-            </article>
-
-        </section>
+    </section>
 
 
-        <section class="api">
+    <section class="lab-grid">
 
-            <h2>Test our cloud API</h2>
+        <article class="panel">
+
+            <h2>GET API Demo</h2>
 
             <p>
-                Click below to call the FastAPI backend.
+                Send a name using an HTTP GET request.
             </p>
 
-            <button onclick="callApi()">
-                Call API
+            <input
+                id="getName"
+                type="text"
+                placeholder="Enter your name"
+                value="Jey"
+            >
+
+            <button onclick="testGet()">
+                Test GET
             </button>
 
-            <pre id="result">Waiting for API call...</pre>
+            <pre id="getResult">Waiting...</pre>
 
-        </section>
-
-    </main>
+        </article>
 
 
-    <script>
+        <article class="panel">
 
-        async function callApi() {
+            <h2>POST API Demo</h2>
 
-            const result =
-                document.getElementById("result");
+            <p>
+                Send JSON data to the FastAPI server.
+            </p>
 
-            result.textContent = "Calling API...";
+            <input
+                id="postName"
+                type="text"
+                placeholder="Name"
+                value="Jey"
+            >
 
-            try {
+            <textarea
+                id="postMessage"
+                placeholder="Enter message"
+            >Hello from the browser!</textarea>
 
-                const response =
-                    await fetch("/api/hello");
+            <button onclick="testPost()">
+                Test POST
+            </button>
 
-                const data =
-                    await response.json();
+            <pre id="postResult">Waiting...</pre>
 
-                result.textContent =
-                    JSON.stringify(data, null, 2);
+        </article>
 
-            } catch (error) {
+    </section>
 
-                result.textContent =
-                    "API call failed: " + error;
 
-            }
+    <section class="lab-grid">
 
-        }
+        <article class="panel">
 
-    </script>
+            <h2>Environment Variables</h2>
+
+            <p>
+                Read safe configuration values supplied
+                by the cloud environment.
+            </p>
+
+            <button onclick="testEnvironment()">
+                Read Environment
+            </button>
+
+            <pre id="envResult">Waiting...</pre>
+
+        </article>
+
+
+        <article class="panel">
+
+            <h2>External API</h2>
+
+            <p>
+                The Render server calls the GitHub
+                public API from the cloud.
+            </p>
+
+            <button onclick="testExternal()">
+                Call External API
+            </button>
+
+            <pre id="externalResult">Waiting...</pre>
+
+        </article>
+
+    </section>
+
+
+    <section class="links-panel">
+
+        <h2>Useful Endpoints</h2>
+
+        <div class="endpoint-list">
+
+            <a href="/health" target="_blank">
+                /health
+            </a>
+
+            <a href="/docs" target="_blank">
+                /docs
+            </a>
+
+            <a href="/api/server-info" target="_blank">
+                /api/server-info
+            </a>
+
+            <a href="/api/hello?name=Jey" target="_blank">
+                /api/hello
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+        Free Cloud Lab v{{ version }} · GitHub + Render + FastAPI
+    </footer>
+
+</div>
+
+
+<script>
+
+function renderJson(elementId, data) {
+
+    document.getElementById(elementId).textContent =
+        JSON.stringify(data, null, 2);
+
+}
+
+
+async function loadServerInfo() {
+
+    const output =
+        document.getElementById("serverInfo");
+
+    output.textContent = "Loading...";
+
+    try {
+
+        const response =
+            await fetch("/api/server-info");
+
+        const data =
+            await response.json();
+
+        renderJson("serverInfo", data);
+
+    } catch (error) {
+
+        output.textContent =
+            "Request failed: " + error;
+
+    }
+
+}
+
+
+async function testGet() {
+
+    const name =
+        document.getElementById("getName").value;
+
+    const output =
+        document.getElementById("getResult");
+
+    output.textContent = "Calling GET API...";
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/hello?name=" +
+                encodeURIComponent(name)
+            );
+
+        const data =
+            await response.json();
+
+        renderJson("getResult", data);
+
+    } catch (error) {
+
+        output.textContent =
+            "Request failed: " + error;
+
+    }
+
+}
+
+
+async function testPost() {
+
+    const name =
+        document.getElementById("postName").value;
+
+    const message =
+        document.getElementById("postMessage").value;
+
+    const output =
+        document.getElementById("postResult");
+
+    output.textContent = "Calling POST API...";
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/message",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        name,
+                        message
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        renderJson("postResult", data);
+
+    } catch (error) {
+
+        output.textContent =
+            "Request failed: " + error;
+
+    }
+
+}
+
+
+async function testEnvironment() {
+
+    const output =
+        document.getElementById("envResult");
+
+    output.textContent = "Loading...";
+
+    try {
+
+        const response =
+            await fetch("/api/environment");
+
+        const data =
+            await response.json();
+
+        renderJson("envResult", data);
+
+    } catch (error) {
+
+        output.textContent =
+            "Request failed: " + error;
+
+    }
+
+}
+
+
+async function testExternal() {
+
+    const output =
+        document.getElementById("externalResult");
+
+    output.textContent =
+        "Calling external API from cloud server...";
+
+    try {
+
+        const response =
+            await fetch("/api/external");
+
+        const data =
+            await response.json();
+
+        renderJson("externalResult", data);
+
+    } catch (error) {
+
+        output.textContent =
+            "Request failed: " + error;
+
+    }
+
+}
+
+</script>
 
 </body>
 </html>
