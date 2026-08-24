@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FreeCloud Demo</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="badge">
+            ₹0 CLOUD PROJECT
+        </div>
+
+        <h1>{{ app_name }}</h1>
+
+        <p class="subtitle">
+            This application was developed and deployed
+            completely from the browser.
+        </p>
+
+        <div class="status">
+            <span></span>
+            Application Running
+        </div>
+
+
+        <section class="cards">
+
+            <article>
+                <h2>☁️ Free Cloud</h2>
+                <p>
+                    Application running using
+                    free cloud infrastructure.
+                </p>
+            </article>
+
+            <article>
+                <h2>🌐 Free URL</h2>
+                <p>
+                    Public HTTPS URL without
+                    purchasing a domain.
+                </p>
+            </article>
+
+            <article>
+                <h2>⚡ FastAPI</h2>
+                <p>
+                    Python REST API running
+                    on the cloud server.
+                </p>
+            </article>
+
+            <article>
+                <h2>🔐 HTTPS</h2>
+                <p>
+                    Secure HTTPS connection
+                    included automatically.
+                </p>
+            </article>
+
+        </section>
+
+
+        <section class="api">
+
+            <h2>Test our cloud API</h2>
+
+            <p>
+                Click below to call the FastAPI backend.
+            </p>
+
+            <button onclick="callApi()">
+                Call API
+            </button>
+
+            <pre id="result">Waiting for API call...</pre>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        async function callApi() {
+
+            const result =
+                document.getElementById("result");
+
+            result.textContent = "Calling API...";
+
+            try {
+
+                const response =
+                    await fetch("/api/hello");
+
+                const data =
+                    await response.json();
+
+                result.textContent =
+                    JSON.stringify(data, null, 2);
+
+            } catch (error) {
+
+                result.textContent =
+                    "API call failed: " + error;
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
