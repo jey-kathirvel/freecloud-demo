@@ -1,242 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Cloud Lab</title>
-    <link rel="stylesheet" href="/static/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Cloud Dev Tools</title>
+<link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <div class="page-shell">
-    <header class="hero">
-        <div class="badge">FREE CLOUD LAB v{{ version }}</div>
-        <h1>{{ app_name }}</h1>
-        <p>Paste cURL copied directly from Postman, run it from the cloud, and inspect the response without installing anything locally.</p>
-        <div class="hero-status"><span class="status-dot"></span> Running on Render Free Cloud</div>
-    </header>
-
-    <section class="summary-grid">
-        <article class="summary-card"><span>Cloud</span><strong>Render</strong></article>
-        <article class="summary-card"><span>Backend</span><strong>FastAPI</strong></article>
-        <article class="summary-card"><span>Source</span><strong>GitHub</strong></article>
-        <article class="summary-card"><span>Cost</span><strong>₹0</strong></article>
-    </section>
-
-    <section class="panel curl-panel">
-        <div class="panel-header">
-            <div>
-                <h2>Postman cURL Runner</h2>
-                <p>Copy cURL from Postman and paste it exactly as generated. Multiline backslashes, headers and JSON bodies are normalized automatically.</p>
-            </div>
-            <div class="security-note">Secrets are masked in displayed request details</div>
-        </div>
-
-        <label for="curlCommand">cURL command</label>
-        <textarea id="curlCommand" class="curl-input" spellcheck="false" placeholder="Paste Postman cURL here...">curl --location 'https://jsonplaceholder.typicode.com/posts/1'</textarea>
-
-        <div class="button-row">
-            <button id="runCurlButton" onclick="runCurl()">▶ Run Request</button>
-            <button class="secondary-button" onclick="loadSampleCurl()">Load POST Sample</button>
-            <button class="secondary-button" onclick="clearCurl()">Clear</button>
-        </div>
-
-        <div id="curlMeta" class="request-meta hidden">
-            <span id="metaMethod">—</span>
-            <span id="metaStatus">—</span>
-            <span id="metaTime">—</span>
-        </div>
-
-        <div id="curlError" class="error-box hidden"></div>
-
-        <div class="response-grid">
-            <div>
-                <h3>Response Body</h3>
-                <pre id="curlResponse">Waiting for request...</pre>
-            </div>
-            <div>
-                <h3>Request / Response Details</h3>
-                <pre id="curlDetails">Waiting for request...</pre>
-            </div>
-        </div>
-    </section>
-
-    <section class="lab-grid">
-        <article class="panel">
-            <h2>Environment Variables</h2>
-            <p>Read safe configuration values supplied by the cloud environment.</p>
-            <button onclick="testEnvironment()">Read Environment</button>
-            <pre id="envResult">Waiting...</pre>
-        </article>
-    </section>
-
-    <section class="links-panel">
-        <h2>Useful Endpoints</h2>
-        <div class="endpoint-list">
-            <a href="/health" target="_blank">/health</a>
-            <a href="/docs" target="_blank">/docs</a>
-            <a href="/api/server-info" target="_blank">/api/server-info</a>
-            <a href="/api/hello?name=Jey" target="_blank">/api/hello</a>
-        </div>
-    </section>
-
-    <footer>Free Cloud Lab v{{ version }} · GitHub + Render + FastAPI</footer>
+<header class="hero">
+  <div class="badge">FREE CLOUD DEV TOOLS v{{ version }}</div>
+  <h1>{{ app_name }}</h1>
+  <p>API testing, JSON/data conversion, encoding, security, network checks and everyday developer utilities — all in the browser and free cloud.</p>
+  <div class="hero-status"><span class="status-dot"></span> Running on Render Free Cloud · No local install</div>
+</header>
+<section class="summary-grid">
+  <article class="summary-card"><span>API & HTTP</span><strong>8 tools</strong></article>
+  <article class="summary-card"><span>Data & Text</span><strong>8 tools</strong></article>
+  <article class="summary-card"><span>Security</span><strong>6 tools</strong></article>
+  <article class="summary-card"><span>Network & Utility</span><strong>10+ tools</strong></article>
+</section>
+<nav class="tool-nav">
+  <button class="nav-btn active" data-group="all">All</button><button class="nav-btn" data-group="api">API & HTTP</button><button class="nav-btn" data-group="data">JSON & Data</button><button class="nav-btn" data-group="security">Encoding & Security</button><button class="nav-btn" data-group="network">Network</button><button class="nav-btn" data-group="utility">Utilities</button>
+</nav>
+<div class="tools-grid">
+<section class="tool-card wide" data-group="api"><h2>🚀 Postman cURL Runner</h2><p>Paste Postman “Copy as cURL” exactly as generated. Multiline commands are normalized automatically.</p><textarea id="curlCommand" class="code-input tall" spellcheck="false">curl --location 'https://jsonplaceholder.typicode.com/posts/1'</textarea><div class="button-row"><button id="runCurlButton" onclick="runCurl()">▶ Run Request</button><button class="secondary-button" onclick="loadSampleCurl()">POST Sample</button><button class="secondary-button" onclick="clearTool('curlCommand','curlResult')">Clear</button></div><div id="curlMeta" class="request-meta hidden"><span id="metaMethod">—</span><span id="metaStatus">—</span><span id="metaTime">—</span></div><pre id="curlResult">Waiting for request...</pre></section>
+<section class="tool-card wide" data-group="api"><h2>🧪 API Request Builder</h2><p>Build GET/POST/PUT/PATCH/DELETE requests without writing cURL.</p><div class="inline-fields"><select id="apiMethod"><option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>HEAD</option><option>OPTIONS</option></select><input id="apiUrl" value="https://jsonplaceholder.typicode.com/posts/1" placeholder="https://api.example.com"></div><label>Headers (one per line: Name: Value)</label><textarea id="apiHeaders" class="code-input" placeholder="Content-Type: application/json"></textarea><label>Body</label><textarea id="apiBody" class="code-input" placeholder='{"name":"demo"}'></textarea><div class="button-row"><button onclick="runApiBuilder()">Run Request</button><button class="secondary-button" onclick="generateCurl()">Generate cURL</button></div><pre id="apiResult">Waiting...</pre></section>
+<section class="tool-card" data-group="api"><h2>⏱ API Response Timer</h2><input id="timerUrl" value="https://api.github.com"><button onclick="quickUrlTest('timerUrl','timerResult','timer')">Measure</button><pre id="timerResult">Waiting...</pre></section>
+<section class="tool-card" data-group="api"><h2>📋 HTTP Header Analyzer</h2><input id="headerUrl" value="https://api.github.com"><button onclick="quickUrlTest('headerUrl','headerResult','headers')">Analyze</button><pre id="headerResult">Waiting...</pre></section>
+<section class="tool-card" data-group="api"><h2>↪ Redirect Checker</h2><input id="redirectUrl" value="https://github.com"><button onclick="quickUrlTest('redirectUrl','redirectResult','redirects')">Check</button><pre id="redirectResult">Waiting...</pre></section>
+<section class="tool-card" data-group="api"><h2>📖 HTTP Status Explainer</h2><input id="statusCode" type="number" value="404" min="100" max="599"><button onclick="explainStatus()">Explain</button><pre id="statusResult">Waiting...</pre></section>
+<section class="tool-card" data-group="api"><h2>🧹 cURL Normalizer</h2><textarea id="normalizeCurl" class="code-input" placeholder="Paste multiline Postman cURL"></textarea><button onclick="normalizeCurlClient()">Normalize</button><pre id="normalizeResult">Waiting...</pre></section>
+<section class="tool-card" data-group="api"><h2>🔗 cURL Generator</h2><p>Use the API Request Builder and click <b>Generate cURL</b>.</p><pre>Supports method, URL, headers and body.</pre></section>
+<section class="tool-card" data-group="data"><h2>✨ JSON Formatter</h2><textarea id="jsonFormatInput" class="code-input" placeholder='{"hello":"world"}'></textarea><div class="button-row"><button onclick="jsonFormat(false)">Pretty</button><button class="secondary-button" onclick="jsonFormat(true)">Minify</button></div><pre id="jsonFormatResult">Waiting...</pre></section>
+<section class="tool-card" data-group="data"><h2>✅ JSON Validator</h2><textarea id="jsonValidateInput" class="code-input" placeholder='{"valid":true}'></textarea><button onclick="jsonValidate()">Validate</button><pre id="jsonValidateResult">Waiting...</pre></section>
+<section class="tool-card" data-group="data"><h2>🔁 JSON ↔ YAML</h2><textarea id="yamlInput" class="code-input" placeholder='{"name":"FreeCloud","free":true}'></textarea><div class="button-row"><button onclick="convertServer('/api/convert/json-to-yaml','yamlInput','yamlResult')">JSON → YAML</button><button class="secondary-button" onclick="convertServer('/api/convert/yaml-to-json','yamlInput','yamlResult')">YAML → JSON</button></div><pre id="yamlResult">Waiting...</pre></section>
+<section class="tool-card" data-group="data"><h2>📊 CSV ↔ JSON</h2><textarea id="csvInput" class="code-input" placeholder="name,role\nJey,Developer"></textarea><div class="button-row"><button onclick="convertServer('/api/convert/csv-to-json','csvInput','csvResult')">CSV → JSON</button><button class="secondary-button" onclick="convertServer('/api/convert/json-to-csv','csvInput','csvResult')">JSON → CSV</button></div><pre id="csvResult">Waiting...</pre></section>
+<section class="tool-card wide" data-group="data"><h2>🆚 Text Diff</h2><div class="two-col"><textarea id="diffA" class="code-input" placeholder="Original text"></textarea><textarea id="diffB" class="code-input" placeholder="Changed text"></textarea></div><button onclick="textDiff()">Compare</button><pre id="diffResult">Waiting...</pre></section>
+<section class="tool-card" data-group="data"><h2>🔍 Regex Tester</h2><input id="regexPattern" value="\\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\\b"><input id="regexFlags" value="gi" placeholder="Flags: gi"><textarea id="regexText">Email us at demo@example.com</textarea><button onclick="regexTest()">Test</button><pre id="regexResult">Waiting...</pre></section>
+<section class="tool-card" data-group="data"><h2>🌐 HTML Preview</h2><textarea id="htmlInput" class="code-input"><h1>Hello Cloud</h1><p>HTML preview</p></textarea><button onclick="htmlPreview()">Preview</button><iframe id="htmlFrame" sandbox="" title="HTML preview"></iframe></section>
+<section class="tool-card" data-group="data"><h2>📝 Markdown Preview</h2><textarea id="markdownInput" class="code-input"># Hello\n\n**Free Cloud Dev Tools**\n\n- Fast\n- Free</textarea><button onclick="markdownPreview()">Preview</button><div id="markdownResult" class="preview-box"></div></section>
+<section class="tool-card" data-group="security"><h2>🔐 Base64 Encoder / Decoder</h2><textarea id="base64Input" placeholder="Enter text"></textarea><div class="button-row"><button onclick="base64Tool('encode')">Encode</button><button class="secondary-button" onclick="base64Tool('decode')">Decode</button></div><pre id="base64Result">Waiting...</pre></section>
+<section class="tool-card" data-group="security"><h2>🔗 URL Encoder / Decoder</h2><textarea id="urlInput" placeholder="hello world?x=1&y=2"></textarea><div class="button-row"><button onclick="urlTool('encode')">Encode</button><button class="secondary-button" onclick="urlTool('decode')">Decode</button></div><pre id="urlResult">Waiting...</pre></section>
+<section class="tool-card" data-group="security"><h2>🎫 JWT Decoder</h2><textarea id="jwtInput" class="code-input" placeholder="eyJ..."></textarea><button onclick="jwtDecode()">Decode</button><pre id="jwtResult">Decode only — signature is not verified.</pre></section>
+<section class="tool-card" data-group="security"><h2>#️⃣ Hash Generator</h2><textarea id="hashInput" placeholder="Text to hash"></textarea><select id="hashAlgo"><option>SHA-256</option><option>SHA-384</option><option>SHA-512</option></select><button onclick="hashGenerate()">Generate Hash</button><pre id="hashResult">Waiting...</pre></section>
+<section class="tool-card" data-group="security"><h2>🆔 UUID Generator</h2><input id="uuidCount" type="number" value="5" min="1" max="50"><button onclick="uuidGenerate()">Generate</button><pre id="uuidResult">Waiting...</pre></section>
+<section class="tool-card" data-group="security"><h2>🔑 Password Generator</h2><div class="inline-fields"><input id="passwordLength" type="number" value="24" min="8" max="128"><label class="checkbox"><input id="passwordSymbols" type="checkbox" checked> Symbols</label></div><button onclick="passwordGenerate()">Generate</button><pre id="passwordResult">Waiting...</pre></section>
+<section class="tool-card" data-group="network"><h2>🌍 DNS Lookup</h2><input id="dnsHost" value="github.com" placeholder="example.com"><button onclick="networkTool('dns','dnsHost','dnsResult')">Lookup</button><pre id="dnsResult">Waiting...</pre></section>
+<section class="tool-card" data-group="network"><h2>🔒 SSL Certificate Checker</h2><input id="sslHost" value="github.com" placeholder="example.com"><button onclick="networkTool('ssl','sslHost','sslResult')">Check SSL</button><pre id="sslResult">Waiting...</pre></section>
+<section class="tool-card" data-group="network"><h2>🚪 Port Checker</h2><input id="portHost" value="github.com" placeholder="example.com"><select id="portNumber"><option>443</option><option>80</option><option>8080</option><option>8443</option></select><button onclick="portCheck()">Check Port</button><pre id="portResult">Public demo ports: 80, 443, 8080, 8443.</pre></section>
+<section class="tool-card" data-group="network"><h2>🖥 User-Agent Parser</h2><textarea id="uaInput" placeholder="Paste a browser User-Agent"></textarea><button onclick="parseUserAgent()">Parse</button><pre id="uaResult">Waiting...</pre></section>
+<section class="tool-card" data-group="utility"><h2>🕐 Timestamp Converter</h2><input id="timestampInput" placeholder="Unix timestamp or ISO date"><div class="button-row"><button onclick="timestampConvert()">Convert</button><button class="secondary-button" onclick="timestampNow()">Use Now</button></div><pre id="timestampResult">Waiting...</pre></section>
+<section class="tool-card" data-group="utility"><h2>⏰ Cron Expression Helper</h2><input id="cronInput" value="0 9 * * 1-5" placeholder="0 9 * * 1-5"><button onclick="cronExplain()">Explain</button><pre id="cronResult">Waiting...</pre></section>
+<section class="tool-card" data-group="utility"><h2>📱 QR Generator</h2><textarea id="qrInput">https://freecloud-demo.onrender.com</textarea><button onclick="qrGenerate()">Generate QR</button><div id="qrResult" class="qr-result"></div></section>
+<section class="tool-card" data-group="utility"><h2>☁ Server Information</h2><button onclick="loadServerInfo()">Load Server Info</button><pre id="serverInfo">Waiting...</pre></section>
+<section class="tool-card" data-group="utility"><h2>🌱 Environment Demo</h2><button onclick="testEnvironment()">Read Safe Environment</button><pre id="envResult">Waiting...</pre></section>
 </div>
-
+<section class="links-panel"><h2>Developer Endpoints</h2><div class="endpoint-list"><a href="/health" target="_blank">/health</a><a href="/docs" target="_blank">/docs</a><a href="/api/server-info" target="_blank">/api/server-info</a></div></section>
+<footer>Free Cloud Dev Tools v{{ version }} · GitHub + Render + FastAPI</footer>
+</div>
 <script>
-function renderJson(elementId, data) {
-    document.getElementById(elementId).textContent = JSON.stringify(data, null, 2);
-}
-
-function setHidden(id, hidden) {
-    document.getElementById(id).classList.toggle("hidden", hidden);
-}
-
-function prettyBody(body) {
-    if (typeof body === "string") return body;
-    return JSON.stringify(body, null, 2);
-}
-
-async function runCurl() {
-    const command = document.getElementById("curlCommand").value.trim();
-    const button = document.getElementById("runCurlButton");
-    const responseBox = document.getElementById("curlResponse");
-    const detailsBox = document.getElementById("curlDetails");
-    const errorBox = document.getElementById("curlError");
-
-    if (!command) {
-        errorBox.textContent = "Paste a cURL command first.";
-        setHidden("curlError", false);
-        return;
-    }
-
-    button.disabled = true;
-    button.textContent = "Running...";
-    responseBox.textContent = "Sending request from Render cloud...";
-    detailsBox.textContent = "Parsing Postman cURL...";
-    setHidden("curlError", true);
-    setHidden("curlMeta", true);
-
-    try {
-        const response = await fetch("/api/curl", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({command})
-        });
-
-        const data = await response.json();
-
-        if (!data.success) {
-            errorBox.textContent = data.error || "Request failed.";
-            setHidden("curlError", false);
-            responseBox.textContent = "No response body.";
-            detailsBox.textContent = JSON.stringify(data, null, 2);
-            return;
-        }
-
-        document.getElementById("metaMethod").textContent = data.request.method;
-        document.getElementById("metaStatus").textContent = `${data.response.status} ${data.response.reason || ""}`.trim();
-        document.getElementById("metaTime").textContent = `${data.response.elapsed_ms} ms`;
-        setHidden("curlMeta", false);
-
-        responseBox.textContent = prettyBody(data.response.body);
-        detailsBox.textContent = JSON.stringify({
-            request: data.request,
-            response: {
-                status: data.response.status,
-                reason: data.response.reason,
-                url: data.response.url,
-                content_type: data.response.content_type,
-                headers: data.response.headers,
-                redirects: data.response.redirects,
-                truncated: data.response.truncated
-            }
-        }, null, 2);
-    } catch (error) {
-        errorBox.textContent = "Request failed: " + error;
-        setHidden("curlError", false);
-        responseBox.textContent = "No response body.";
-        detailsBox.textContent = String(error);
-    } finally {
-        button.disabled = false;
-        button.textContent = "▶ Run Request";
-    }
-}
-
-function loadSampleCurl() {
-    document.getElementById("curlCommand").value = `curl --location 'https://httpbin.org/post' \\
---header 'Content-Type: application/json' \\
---data '{"name":"Jey","project":"FreeCloud"}'`;
-}
-
-function clearCurl() {
-    document.getElementById("curlCommand").value = "";
-    document.getElementById("curlResponse").textContent = "Waiting for request...";
-    document.getElementById("curlDetails").textContent = "Waiting for request...";
-    setHidden("curlMeta", true);
-    setHidden("curlError", true);
-}
-
-async function loadServerInfo() {
-    const output = document.getElementById("serverInfo");
-    output.textContent = "Loading...";
-    try {
-        const response = await fetch("/api/server-info");
-        renderJson("serverInfo", await response.json());
-    } catch (error) {
-        output.textContent = "Request failed: " + error;
-    }
-}
-
-async function testGet() {
-    const name = document.getElementById("getName").value;
-    const output = document.getElementById("getResult");
-    output.textContent = "Calling GET API...";
-    try {
-        const response = await fetch("/api/hello?name=" + encodeURIComponent(name));
-        renderJson("getResult", await response.json());
-    } catch (error) {
-        output.textContent = "Request failed: " + error;
-    }
-}
-
-async function testPost() {
-    const name = document.getElementById("postName").value;
-    const message = document.getElementById("postMessage").value;
-    const output = document.getElementById("postResult");
-    output.textContent = "Calling POST API...";
-    try {
-        const response = await fetch("/api/message", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({name, message})
-        });
-        renderJson("postResult", await response.json());
-    } catch (error) {
-        output.textContent = "Request failed: " + error;
-    }
-}
-
-async function testEnvironment() {
-    const output = document.getElementById("envResult");
-    output.textContent = "Loading...";
-    try {
-        const response = await fetch("/api/environment");
-        renderJson("envResult", await response.json());
-    } catch (error) {
-        output.textContent = "Request failed: " + error;
-    }
-}
-
-async function testExternal() {
-    const output = document.getElementById("externalResult");
-    output.textContent = "Calling external API from cloud server...";
-    try {
-        const response = await fetch("/api/external");
-        renderJson("externalResult", await response.json());
-    } catch (error) {
-        output.textContent = "Request failed: " + error;
-    }
-}
+const $=id=>document.getElementById(id);const show=(id,v)=>{$(id).textContent=typeof v==='string'?v:JSON.stringify(v,null,2)};const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const g=btn.dataset.group;document.querySelectorAll('.tool-card').forEach(c=>c.classList.toggle('hidden',g!=='all'&&c.dataset.group!==g))}));
+function parseHeaderLines(t){const h={};for(const line of t.split(/\r?\n/)){if(!line.trim())continue;const i=line.indexOf(':');if(i>0)h[line.slice(0,i).trim()]=line.slice(i+1).trim()}return h}
+async function runCurl(){const command=$('curlCommand').value.trim();if(!command)return show('curlResult','Paste a cURL command first.');const b=$('runCurlButton');b.disabled=true;b.textContent='Running...';show('curlResult','Sending request from Render...');try{const r=await fetch('/api/curl',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command})});const d=await r.json();if(!d.success)return show('curlResult',d);$('metaMethod').textContent=d.request.method;$('metaStatus').textContent=`${d.response.status} ${d.response.reason||''}`;$('metaTime').textContent=`${d.response.elapsed_ms} ms`;$('curlMeta').classList.remove('hidden');show('curlResult',{normalized:d.normalized,request:d.request,response:d.response})}catch(e){show('curlResult','Error: '+e)}finally{b.disabled=false;b.textContent='▶ Run Request'}}
+function loadSampleCurl(){$('curlCommand').value=`curl --location 'https://httpbin.org/post' \\\n--header 'Content-Type: application/json' \\\n--data '{"name":"Jey","project":"FreeCloud"}'`}function clearTool(i,r){$(i).value='';show(r,'Waiting...')}function normalizeCurlClient(){let s=$('normalizeCurl').value.replace(/\r\n/g,'\n').replace(/\\\s*\n\s*/g,' ').replace(/\^\s*\n\s*/g,' ').replace(/`\s*\n\s*/g,' ').replace(/\s*\n\s*/g,' ').replace(/[‘’]/g,"'").replace(/[“”]/g,'"').trim();show('normalizeResult',s)}
+async function runApiBuilder(){const p={method:$('apiMethod').value,url:$('apiUrl').value.trim(),headers:parseHeaderLines($('apiHeaders').value),body:$('apiBody').value||null,follow_redirects:true};show('apiResult','Sending...');try{const r=await fetch('/api/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});show('apiResult',await r.json())}catch(e){show('apiResult','Error: '+e)}}
+function generateCurl(){const m=$('apiMethod').value,u=$('apiUrl').value.trim(),h=parseHeaderLines($('apiHeaders').value),body=$('apiBody').value;let c=`curl --location --request ${m} '${u.replace(/'/g,"'\\''")}'`;for(const[k,v]of Object.entries(h))c+=` \\\n--header '${k}: ${v.replace(/'/g,"'\\''")}'`;if(body)c+=` \\\n--data '${body.replace(/'/g,"'\\''")}'`;show('apiResult',c)}
+async function quickUrlTest(i,o,mode){const url=$(i).value.trim();show(o,'Loading...');try{const r=await fetch('/api/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({method:'GET',url,headers:{},body:null,follow_redirects:true})});const d=await r.json();if(!d.success)return show(o,d);if(mode==='timer')show(o,{status:d.response.status,elapsed_ms:d.response.elapsed_ms,url:d.response.url});else if(mode==='headers')show(o,{status:d.response.status,headers:d.response.headers});else show(o,{final_url:d.response.url,status:d.response.status,redirects:d.response.redirects})}catch(e){show(o,'Error: '+e)}}
+const statusText={200:'OK — request succeeded.',201:'Created — resource was created.',204:'No Content — success with no response body.',301:'Moved Permanently — permanent redirect.',302:'Found — temporary redirect.',304:'Not Modified — cached copy can be used.',400:'Bad Request — request syntax or data is invalid.',401:'Unauthorized — authentication is required or invalid.',403:'Forbidden — request is not allowed.',404:'Not Found — resource does not exist.',409:'Conflict — request conflicts with current state.',422:'Unprocessable Content — validation failed.',429:'Too Many Requests — rate limit reached.',500:'Internal Server Error — server failed.',502:'Bad Gateway — invalid upstream response.',503:'Service Unavailable — temporarily unavailable.',504:'Gateway Timeout — upstream took too long.'};function explainStatus(){const c=Number($('statusCode').value);show('statusResult',statusText[c]||`${c}: ${c<200?'Informational':c<300?'Success':c<400?'Redirection':c<500?'Client error':c<600?'Server error':'Unknown'}.`)}
+function jsonFormat(min){try{show('jsonFormatResult',JSON.stringify(JSON.parse($('jsonFormatInput').value),null,min?0:2))}catch(e){show('jsonFormatResult','Invalid JSON: '+e.message)}}function jsonValidate(){try{const d=JSON.parse($('jsonValidateInput').value);show('jsonValidateResult',{valid:true,type:Array.isArray(d)?'array':typeof d})}catch(e){show('jsonValidateResult',{valid:false,error:e.message})}}
+async function convertServer(ep,i,o){show(o,'Converting...');try{const r=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:$(i).value})});const d=await r.json();show(o,d.success?d.result:d)}catch(e){show(o,'Error: '+e)}}function textDiff(){const a=$('diffA').value.split(/\r?\n/),b=$('diffB').value.split(/\r?\n/),n=Math.max(a.length,b.length),out=[];for(let i=0;i<n;i++){if(a[i]===b[i])out.push(`  ${a[i]??''}`);else{if(a[i]!==undefined)out.push(`- ${a[i]}`);if(b[i]!==undefined)out.push(`+ ${b[i]}`)}}show('diffResult',out.join('\n'))}
+function regexTest(){try{const r=new RegExp($('regexPattern').value,$('regexFlags').value),text=$('regexText').value;let m,all=[];if(r.global){while((m=r.exec(text))!==null){all.push({match:m[0],index:m.index,groups:m.slice(1)});if(m[0]==='')r.lastIndex++}}else{m=r.exec(text);if(m)all=[{match:m[0],index:m.index,groups:m.slice(1)}]}show('regexResult',{matches:all.length,results:all})}catch(e){show('regexResult','Regex error: '+e.message)}}function htmlPreview(){$('htmlFrame').srcdoc=$('htmlInput').value}function markdownPreview(){let s=escapeHtml($('markdownInput').value);s=s.replace(/^### (.*)$/gm,'<h3>$1</h3>').replace(/^## (.*)$/gm,'<h2>$1</h2>').replace(/^# (.*)$/gm,'<h1>$1</h1>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/^[-*] (.*)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');$('markdownResult').innerHTML=s}
+function base64Tool(m){try{const s=$('base64Input').value;if(m==='encode'){const bytes=new TextEncoder().encode(s);let bin='';bytes.forEach(b=>bin+=String.fromCharCode(b));show('base64Result',btoa(bin))}else{const bin=atob(s.trim()),bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));show('base64Result',new TextDecoder().decode(bytes))}}catch(e){show('base64Result','Error: '+e.message)}}function urlTool(m){try{show('urlResult',m==='encode'?encodeURIComponent($('urlInput').value):decodeURIComponent($('urlInput').value))}catch(e){show('urlResult','Error: '+e.message)}}
+function b64url(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return decodeURIComponent(Array.from(atob(s)).map(c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join(''))}function jwtDecode(){try{const p=$('jwtInput').value.trim().split('.');if(p.length<2)throw new Error('JWT must contain header.payload');show('jwtResult',{warning:'Decoded only; signature NOT verified.',header:JSON.parse(b64url(p[0])),payload:JSON.parse(b64url(p[1])),signature_present:p.length>2&&!!p[2]})}catch(e){show('jwtResult','JWT error: '+e.message)}}async function hashGenerate(){try{const b=new TextEncoder().encode($('hashInput').value),d=await crypto.subtle.digest($('hashAlgo').value,b);show('hashResult',Array.from(new Uint8Array(d)).map(x=>x.toString(16).padStart(2,'0')).join(''))}catch(e){show('hashResult','Error: '+e.message)}}function uuidGenerate(){const n=Math.min(50,Math.max(1,Number($('uuidCount').value)||1));show('uuidResult',Array.from({length:n},()=>crypto.randomUUID()).join('\n'))}function passwordGenerate(){const n=Math.min(128,Math.max(8,Number($('passwordLength').value)||24));let chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';if($('passwordSymbols').checked)chars+='!@#$%^&*()-_=+[]{};:,.?';const a=new Uint32Array(n);crypto.getRandomValues(a);show('passwordResult',Array.from(a,x=>chars[x%chars.length]).join(''))}
+async function networkTool(k,i,o){show(o,'Checking...');try{const r=await fetch('/api/network/'+k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({host:$(i).value.trim()})});show(o,await r.json())}catch(e){show(o,'Error: '+e)}}async function portCheck(){show('portResult','Checking...');try{const r=await fetch('/api/network/port',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({host:$('portHost').value.trim(),port:Number($('portNumber').value)})});show('portResult',await r.json())}catch(e){show('portResult','Error: '+e)}}function parseUserAgent(){const ua=$('uaInput').value||navigator.userAgent;let browser=/Edg\/([\d.]+)/.exec(ua)||/Chrome\/([\d.]+)/.exec(ua)||/Firefox\/([\d.]+)/.exec(ua)||/Version\/([\d.]+).*Safari/.exec(ua);let os=/Windows NT ([\d.]+)/.test(ua)?'Windows '+RegExp.$1:/Android ([\d.]+)/.test(ua)?'Android '+RegExp.$1:/iPhone OS ([\d_]+)/.test(ua)?'iOS '+RegExp.$1.replace(/_/g,'.'):/Mac OS X ([\d_]+)/.test(ua)?'macOS '+RegExp.$1.replace(/_/g,'.'):/Linux/.test(ua)?'Linux':'Unknown';let name=/Edg\//.test(ua)?'Edge':/Chrome\//.test(ua)?'Chrome':/Firefox\//.test(ua)?'Firefox':/Safari\//.test(ua)?'Safari':'Unknown';show('uaResult',{browser:name,version:browser?browser[1]:'Unknown',os,mobile:/Mobile|Android|iPhone|iPad/.test(ua),user_agent:ua})}
+function timestampConvert(){const v=$('timestampInput').value.trim();let d;if(/^\d+(\.\d+)?$/.test(v)){let n=Number(v);if(n<1e12)n*=1000;d=new Date(n)}else d=new Date(v);if(Number.isNaN(d.getTime()))return show('timestampResult','Invalid date/timestamp');show('timestampResult',{iso:d.toISOString(),local:d.toString(),unix_seconds:Math.floor(d.getTime()/1000),unix_milliseconds:d.getTime()})}function timestampNow(){$('timestampInput').value=Math.floor(Date.now()/1000);timestampConvert()}function cronExplain(){const v=$('cronInput').value.trim(),p=v.split(/\s+/);if(p.length!==5)return show('cronResult','Standard cron needs 5 fields: minute hour day-of-month month day-of-week');const [mi,h,dom,mo,dow]=p;show('cronResult',{valid_shape:true,expression:v,minute:mi,hour:h,day_of_month:dom,month:mo,day_of_week:dow,note:'* means every value; ranges, lists and step values depend on scheduler implementation.'})}async function qrGenerate(){const box=$('qrResult');box.textContent='Generating...';try{const r=await fetch('/api/qr',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:$('qrInput').value})});const d=await r.json();if(!d.success)return box.textContent=d.error;box.innerHTML='';const img=document.createElement('img');img.src=d.data_uri;img.alt='Generated QR code';box.appendChild(img)}catch(e){box.textContent='Error: '+e}}async function loadServerInfo(){show('serverInfo','Loading...');try{const r=await fetch('/api/server-info');show('serverInfo',await r.json())}catch(e){show('serverInfo','Error: '+e)}}async function testEnvironment(){show('envResult','Loading...');try{const r=await fetch('/api/environment');show('envResult',await r.json())}catch(e){show('envResult','Error: '+e)}}
 </script>
 </body>
 </html>
